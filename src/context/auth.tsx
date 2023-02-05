@@ -1,42 +1,83 @@
-import { createContext, JSX, useContext } from "solid-js";
-import { createSessionStorage } from "solid-start";
+import { Accessor, createContext, createSignal, JSX, onMount, useContext } from "solid-js";
+import { User } from "~/store/user";
+import { trpc } from "~/utils/trpc";
 
-const AuthContext = createContext()
+interface Context {
+  user: Accessor<User | null>;
+  login: (email: string, password: string) => Promise<void>;
+  logout: () => Promise<void>;
+  signup: (email: string, password: string, username: string) => Promise<void>;
+}
+
+const AuthContext = createContext<Context>();
 
 interface AuthProviderProps {
   children: JSX.Element
 }
 
-export function authProvider(props: AuthProviderProps) {
-  const storage = createSessionStorage({
-    cookie: {
-      name: "session",
-      secure: import.meta.env.PROD,
-      secrets: [import.meta.env.VITE_SESSION_SECRET],
-      sameSite: "lax",
-      path: "/",
-      maxAge: 60 * 60 * 24 * 30, // 30 days
-      httpOnly: true
-    },
-    async createData(data, expires) {
-      return db.sessions.create({ data: { ...data, expires } });
-    },
-    async updateData(id, data, expires) {
-      return db.sessions.update({ where: { id }, data: { ...data, expires } });
-    },
-    async deleteData(id) {
-      return db.sessions.delete({ where: { id } });
-    },
-    async readData(id) {
-      return db.sessions.findUnique({ where: { id } });
+export function AuthProvider(props: AuthProviderProps) {
+  const localStorageUserName = "USER";
+  const [user, setUser] = createSignal<User | null>(null);
+
+
+
+  const login = async (email: string, password: string): Promise<void> => {
+    try {
+      const u = await trpc.auth.login.query({
+        email: email,
+        password: password
+      });
+      const newU: User = {
+        id: u.id,
+        email: u.email,
+        username: u.username,
+        createAt: new Date(u.createAt),
+        updateAt: new Date(u.updateAt),
+      }
+      setUser(newU);
+      localStorage.setItem(localStorageUserName, JSON.stringify(newU));
+    } catch (e) {
+      console.log(e);
+    }
+  }
+  const logout = async (): Promise<void> => {
+    localStorage.removeItem(localStorageUserName);
+  }
+  const signup = async (email: string, password: string, username: string): Promise<void> => {
+    try {
+      const u = await trpc.auth.register.mutate({
+        email: email,
+        password: password,
+        username: username,
+      });
+      const newU: User = {
+        id: u.id,
+        email: u.email,
+        username: u.username,
+        createAt: new Date(u.createAt),
+        updateAt: new Date(u.updateAt),
+      }
+      setUser(newU);
+      localStorage.setItem(localStorageUserName, JSON.stringify(newU));
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
+  onMount(() => {
+    const u: string | null = localStorage.getItem(localStorageUserName);
+    if (u) {
+      setUser(JSON.parse(u));
     }
   });
 
   return (
-    <AuthContext.Provider value={storage}>
+    <AuthContext.Provider value={{ user, login, logout, signup }} >
       {props.children}
     </AuthContext.Provider>
   )
 }
 
-export const useAuth = () => useContext(AuthContext);
+export function useAuth() {
+  return useContext(AuthContext)!!;
+}

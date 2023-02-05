@@ -1,12 +1,10 @@
-import Counter from "~/components/Counter";
+import { Navigate } from "solid-start";
+import { useAuth } from "~/context/auth";
 
 export default function Home() {
+  const { user } = useAuth()!!;
+
   return (
-    <main class="text-center mx-auto text-gray-700 p-4">
-      <h1 class="max-6-xs text-6xl text-sky-700 font-thin uppercase my-16">
-        Hello world!
-      </h1>
-      <Counter />
-    </main>
+    <Navigate href={user() ? "/dashboard" : "/login"} />
   );
 }

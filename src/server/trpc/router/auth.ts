@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { User } from "~/store/user";
 import { publicProcedure, router } from "../utils";
 
 const authRouter = router({
@@ -22,7 +23,7 @@ const authRouter = router({
             if (user.password !== password) {
                 throw new Error("Invalid password")
             }
-            return user;
+            return user as User;
         }),
     register: publicProcedure
         .input(
@@ -41,7 +42,7 @@ const authRouter = router({
                     password: password,
                 }
             })
-            return user
+            return user as User
         }),
 });
 

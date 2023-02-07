@@ -5,7 +5,7 @@ import { trpc } from "~/utils/trpc";
 interface Context {
   user: Accessor<User | null>;
   login: (email: string, password: string) => Promise<void>;
-  logout: () => Promise<void>;
+  logout: () => void;
   signup: (email: string, password: string, username: string) => Promise<void>;
 }
 
@@ -15,11 +15,10 @@ interface AuthProviderProps {
   children: JSX.Element
 }
 
+export const localStorageUserName = "USER";
+
 export function AuthProvider(props: AuthProviderProps) {
-  const localStorageUserName = "USER";
   const [user, setUser] = createSignal<User | null>(null);
-
-
 
   const login = async (email: string, password: string): Promise<void> => {
     try {
@@ -40,7 +39,8 @@ export function AuthProvider(props: AuthProviderProps) {
       console.log(e);
     }
   }
-  const logout = async (): Promise<void> => {
+  const logout = (): void => {
+    setUser(null);
     localStorage.removeItem(localStorageUserName);
   }
   const signup = async (email: string, password: string, username: string): Promise<void> => {

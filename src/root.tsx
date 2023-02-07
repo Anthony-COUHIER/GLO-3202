@@ -11,7 +11,7 @@ import {
   Scripts,
   Title, useLocation
 } from "solid-start";
-import Header from "./components/Header";
+import { Header } from "./components/Header";
 import { AuthProvider } from "./context/auth";
 import "./root.css";
 

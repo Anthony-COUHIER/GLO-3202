@@ -13,7 +13,16 @@ export const taskRouter = router({
             })
         )
         .mutation(async ({ ctx, input }) => {
-            // TODO CREATE TASK
+            const newTask = await ctx.prisma.task.create({
+                data: {
+                    title: input.title,
+                    content: input.description,
+                    isFavorite: input.isFavorite,
+                    goalDate: input.goalDate,
+                    userId: ctx.user.id,
+                },
+            });
+            return newTask;
         }),
     updateTask: protectedProcedure
         .input(
@@ -27,7 +36,19 @@ export const taskRouter = router({
             })
         )
         .mutation(async ({ ctx, input }) => {
-            // TODO UPDATE TASK
+            const updatedTask = await ctx.prisma.task.update({
+                where: {
+                    id: input.id,
+                },
+                data: {
+                    title: input.title,
+                    content: input.description,
+                    isFavorite: input.isFavorite,
+                    goalDate: input.goalDate,
+                    completed: input.isCompleted,
+                },
+            });
+            return updatedTask;
         }),
     deleteTask: protectedProcedure
         .input(
@@ -36,7 +57,12 @@ export const taskRouter = router({
             })
         )
         .mutation(async ({ ctx, input }) => {
-            // TODO DELETE TASK
+            const deletedTask = await ctx.prisma.task.delete({
+                where: {
+                    id: input.id,
+                },
+            });
+            return deletedTask;
         }),
     getTasks: protectedProcedure
         .input(
@@ -47,7 +73,17 @@ export const taskRouter = router({
             })
         )
         .query(async ({ ctx, input }) => {
-            // TODO GET TASKS
+            const tasks = await ctx.prisma.task.findMany({
+                where: {
+                    userId: ctx.user.id,
+                    title: {
+                        contains: input.searchQuery,
+                    },
+                    completed: input.isCompleted,
+                    isFavorite: input.isFavorite,
+                },
+            });
+            return tasks;
         }),
 });
 

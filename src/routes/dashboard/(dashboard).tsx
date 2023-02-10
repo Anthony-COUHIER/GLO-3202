@@ -1,17 +1,18 @@
 import { Prisma } from "@prisma/client";
-import { createSignal, For, onMount } from "solid-js";
+import { createSignal, onMount } from "solid-js";
 import { Navigate } from "solid-start";
+import { Button } from "~/components/Button";
+import { ModalCreateTask } from "~/components/ModalCreateTask";
 import { useAuth } from "~/context/auth";
 import { trpc } from "~/utils/trpc";
 
 export default function dashboard() {
+  const [modalOpen, setModalOpen] = createSignal(false);
   const [tasks, setTasks] = createSignal<Prisma.TaskCreateInput[]>([]);
   const [isLoading, setIsLoading] = createSignal(false);
   const { user } = useAuth();
   if (!user()) {
-    return (
-      <Navigate href="/login" />
-    )
+    return <Navigate href="/login" />;
   }
 
   onMount(async () => {
@@ -21,48 +22,32 @@ export default function dashboard() {
     setIsLoading(false);
   });
 
+  async function test(title: string, isFavorite: boolean, content: string) {}
+
+  const [fav, setFav] = createSignal(false);
+
   return (
-    <main>
-      <h1>Dashboard</h1>
+    <>
+      <ModalCreateTask
+        actionOnSave={test}
+        modalOpen={modalOpen()}
+        setModalOpen={(b) => setModalOpen(b)}
+      />
+      <main>
+        <h1>Dashboard</h1>
 
-      <div class="max-w-lg m-1">
-        <form
-          onSubmit={async (e) => {
-            e.preventDefault();
-            const title = e.currentTarget.title.value;
-            console.log(title);
-            // const task = await trpc.task.createTask.mutation({ title });
-            // setTasks([...tasks(), task]);
-          }}
-        >
-          <label class="block">
-            <span class="text-gray-700">Title</span>
-            <input
-              type="text"
-              name="title"
-              class="form-input mt-1 block w-full"
-              placeholder="Task title"
-            />
-          </label>
-          <button
-            type="submit"
-            class="mt-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-          >
-            Create task
-          </button>
-        </form>
-      </div>
-
-      <div class="max-w-lg m-1">
-        <ul>
-          <For each={tasks()}>
+        <div class="max-w-lg m-1">
+          <Button onClick={() => setModalOpen(true)}>Create task</Button>
+          {/* <ul> */}
+          {/* <For each={tasks()}>
             {(task) => (
               <li class="bg-white shadow overflow-hidden sm:rounded-lg">
                 {task.title}
               </li>
             )}</For>
-        </ul>
-      </div>
-    </main>
+        </ul> */}
+        </div>
+      </main>
+    </>
   );
 }

@@ -27,12 +27,11 @@
     "@solidjs/router": "^0.7.0",
     "@trpc/client": "^10.10.0",
     "@trpc/server": "^10.10.0",
-    "crypto-js": "^4.1.1",
-    "scrypt-js": "^3.0.1",
     "solid-js": "^1.6.10",
     "solid-start": "^0.2.19",
     "solid-start-trpc": "^0.0.16",
     "solid-start-vercel": "^0.2.20",
+    "solid-toast": "^0.4.0",
     "undici": "^5.17.1",
     "zod": "^3.20.2"
   },

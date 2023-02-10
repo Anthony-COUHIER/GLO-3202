@@ -1,11 +1,9 @@
 import { createSignal } from "solid-js";
-import { useNavigate } from "solid-start";
 import { useAuth } from "~/context/auth";
-import { tabProps } from "~/routes/login";
+import { tabProps } from "~/routes/login/(login)";
 
 export function Login(props: tabProps) {
   const { login } = useAuth();
-  const nav = useNavigate();
   const [email, setEmail] = createSignal("");
   const [password, setPassword] = createSignal("");
 

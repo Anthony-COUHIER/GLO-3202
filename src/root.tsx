@@ -9,8 +9,10 @@ import {
   Meta,
   Routes,
   Scripts,
-  Title, useLocation
+  Title,
+  useLocation,
 } from "solid-start";
+import { Toaster } from "solid-toast";
 import { Header } from "./components/Header";
 import { AuthProvider } from "./context/auth";
 import "./root.css";
@@ -39,6 +41,7 @@ export default function Root() {
             </ErrorBoundary>
           </AuthProvider>
         </Suspense>
+        <Toaster />
         <Scripts />
       </Body>
     </Html>

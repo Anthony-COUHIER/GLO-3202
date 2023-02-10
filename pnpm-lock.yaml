@@ -8,15 +8,14 @@ specifiers:
   '@trpc/server': ^10.10.0
   '@types/node': ^18.11.19
   autoprefixer: ^10.4.13
-  crypto-js: ^4.1.1
   postcss: ^8.4.21
   prisma: ^4.9.0
-  scrypt-js: ^3.0.1
   solid-js: ^1.6.10
   solid-start: ^0.2.19
   solid-start-node: ^0.2.19
   solid-start-trpc: ^0.0.16
   solid-start-vercel: ^0.2.20
+  solid-toast: ^0.4.0
   tailwindcss: ^3.2.4
   typescript: ^4.9.5
   undici: ^5.17.1
@@ -29,12 +28,11 @@ dependencies:
   '@solidjs/router': 0.7.0_solid-js@1.6.10
   '@trpc/client': 10.10.0_@trpc+server@10.10.0
   '@trpc/server': 10.10.0
-  crypto-js: 4.1.1
-  scrypt-js: 3.0.1
   solid-js: 1.6.10
   solid-start: 0.2.19_xj6f3qupzeleg2ggykl2rovl4e
   solid-start-trpc: 0.0.16_sdnyw5qliazxljklv637m5fmw4
   solid-start-vercel: 0.2.20_iwuut7wcgbut5amqkecr3xmnl4
+  solid-toast: 0.4.0_solid-js@1.6.10
   undici: 5.17.1
   zod: 3.20.2
 
@@ -1925,10 +1923,6 @@ packages:
     dependencies:
       browserslist: 4.21.5
 
-  /crypto-js/4.1.1:
-    resolution: {integrity: sha512-o2JlM7ydqd3Qk9CA0L4NL6mTzU2sdx96a+oOfPu8Mkl/PK51vSyoi8/rQ8NknZtk44vq15lmhAj9CIAGwgeWKw==}
-    dev: false
-
   /cssesc/3.0.0:
     resolution: {integrity: sha512-/Tb/JcjK111nNScGob5MNtsntNM1aCNUDipB/TkwZFhyDrrE47SOx/18wF2bbjgc3ZzCSKW1T5nt5EbFoAz/Vg==}
     engines: {node: '>=4'}
@@ -3030,10 +3024,6 @@ packages:
     resolution: {integrity: sha512-rp3So07KcdmmKbGvgaNxQSJr7bGVSVk5S9Eq1F+ppbRo70+YeaDxkw5Dd8NPN+GD6bjnYm2VuPuCXmpuYvmCXQ==}
     dev: false
 
-  /scrypt-js/3.0.1:
-    resolution: {integrity: sha512-cdwTTnqPu0Hyvf5in5asVdZocVDTNRmR7XEcJuIzMjJeSHybHl7vpB66AzwTaIg6CLSbtjcxc8fqcySfnTkccA==}
-    dev: false
-
   /semver/6.3.0:
     resolution: {integrity: sha512-b39TBaTSfV6yBrapU89p5fKekE2m/NwnDocOVruQFS1/veMgdzuPcnOM34M6CwxW8jH/lxEa5rBoDeUwu5HHTw==}
     hasBin: true
@@ -3183,6 +3173,14 @@ packages:
       wait-on: 6.0.1_debug@4.3.4
     transitivePeerDependencies:
       - supports-color
+
+  /solid-toast/0.4.0_solid-js@1.6.10:
+    resolution: {integrity: sha512-ciJbj+n+7KbUN6wfwZsW7lqFESLoQ9sXMG4uJWuHrIw2f0GxX3/wLSKs0Q1YwdTZZRxyRJ1Nwc2eBVcJvs91+g==}
+    peerDependencies:
+      solid-js: ^1.5.4
+    dependencies:
+      solid-js: 1.6.10
+    dev: false
 
   /source-map-js/1.0.2:
     resolution: {integrity: sha512-R0XvVJ9WusLiqTCEiGCmICCMplcCkIwwR11mOSD9CR5u+IXYdiseeEuXCVAjS54zqwkLcPNnmU4OeJ6tUrWhDw==}

@@ -14,5 +14,5 @@ export const serverScheme = z.object({
 
 export const clientScheme = z.object({
     MODE: z.enum(['development', 'production', 'test']).default('development'),
-    START_BASE_URL: z.string().optional().default('http://127.0.0.1:3000'),
+    START_BASE_URL: z.string().optional().default('https://glo-3202.vercel.app'),
 })

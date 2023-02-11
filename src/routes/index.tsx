@@ -1,8 +1,13 @@
-import { Navigate } from "solid-start";
+import { useNavigate } from "solid-start";
 import { useAuth } from "~/context/auth";
 
 export default function Home() {
   const { user } = useAuth();
+  const nav = useNavigate();
 
-  <Navigate href="/dashboard" />;
+  if (!user()) {
+    nav("/login");
+  } else {
+    nav("/dashboard");
+  }
 }

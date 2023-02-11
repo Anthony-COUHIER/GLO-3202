@@ -1,6 +1,6 @@
 import { Prisma } from "@prisma/client";
 import { createSignal, For, onMount } from "solid-js";
-import { Navigate } from "solid-start";
+import { useNavigate } from "solid-start";
 import toast from "solid-toast";
 import { Button } from "~/components/Button";
 import { ModalCreateTask } from "~/components/ModalCreateTask";
@@ -13,8 +13,10 @@ export default function dashboard() {
   const [tasks, setTasks] = createSignal<Prisma.TaskCreateInput[]>([]);
   const [isLoading, setIsLoading] = createSignal(false);
   const { user } = useAuth();
+  const nav = useNavigate();
+
   if (!user()) {
-    return <Navigate href="/login" />;
+    nav("/login");
   }
 
   onMount(async () => {

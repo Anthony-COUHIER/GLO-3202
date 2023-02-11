@@ -41,7 +41,7 @@ export default function Root() {
             </ErrorBoundary>
           </AuthProvider>
         </Suspense>
-        <Toaster />
+        <Toaster position="bottom-right" />
         <Scripts />
       </Body>
     </Html>

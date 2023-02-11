@@ -1,4 +1,11 @@
-import { Accessor, createContext, createSignal, JSX, onMount, useContext } from "solid-js";
+import {
+  Accessor,
+  createContext,
+  createSignal,
+  JSX,
+  onMount,
+  useContext,
+} from "solid-js";
 import { User } from "~/store/user";
 import { trpc } from "~/utils/trpc";
 
@@ -12,7 +19,7 @@ interface Context {
 const AuthContext = createContext<Context>();
 
 interface AuthProviderProps {
-  children: JSX.Element
+  children: JSX.Element;
 }
 
 export const localStorageUserName = "USER";
@@ -24,7 +31,7 @@ export function AuthProvider(props: AuthProviderProps) {
     try {
       const u = await trpc.auth.login.query({
         email: email,
-        password: password
+        password: password,
       });
       const newU: User = {
         id: u.id,
@@ -32,18 +39,22 @@ export function AuthProvider(props: AuthProviderProps) {
         username: u.username,
         createAt: new Date(u.createAt),
         updateAt: new Date(u.updateAt),
-      }
+      };
       setUser(newU);
       localStorage.setItem(localStorageUserName, JSON.stringify(newU));
     } catch (e) {
-      console.log(e);
+      console.error(e);
     }
-  }
+  };
   const logout = (): void => {
     setUser(null);
     localStorage.removeItem(localStorageUserName);
-  }
-  const signup = async (email: string, password: string, username: string): Promise<void> => {
+  };
+  const signup = async (
+    email: string,
+    password: string,
+    username: string
+  ): Promise<void> => {
     try {
       const u = await trpc.auth.register.mutate({
         email: email,
@@ -56,13 +67,13 @@ export function AuthProvider(props: AuthProviderProps) {
         username: u.username,
         createAt: new Date(u.createAt),
         updateAt: new Date(u.updateAt),
-      }
+      };
       setUser(newU);
       localStorage.setItem(localStorageUserName, JSON.stringify(newU));
     } catch (e) {
-      console.log(e);
+      console.error(e);
     }
-  }
+  };
 
   onMount(() => {
     const u: string | null = localStorage.getItem(localStorageUserName);
@@ -72,10 +83,10 @@ export function AuthProvider(props: AuthProviderProps) {
   });
 
   return (
-    <AuthContext.Provider value={{ user, login, logout, signup }} >
+    <AuthContext.Provider value={{ user, login, logout, signup }}>
       {props.children}
     </AuthContext.Provider>
-  )
+  );
 }
 
 export function useAuth() {

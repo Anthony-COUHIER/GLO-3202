@@ -1,11 +1,20 @@
 import { z } from "zod";
-import { protectedProcedure } from "../middleware/protected";
-import { router } from "../utils";
+import { publicProcedure, router } from "../utils";
+
+async function userExist(ctx, userId: string) {
+   const res = await ctx.prisma.user.findUnique({
+        where: {
+            id: userId,
+        },
+    });
+    console.log("res", res);
+}
 
 export const taskRouter = router({
-    createTask: protectedProcedure
+    createTask: publicProcedure
         .input(
             z.object({
+                userId: z.string(),
                 title: z.string(),
                 description: z.string(),
                 isFavorite: z.boolean().optional(),
@@ -13,20 +22,24 @@ export const taskRouter = router({
             })
         )
         .mutation(async ({ ctx, input }) => {
+            if (userExist(ctx, input.userId) === null) {
+                throw new Error("User does not exist");
+            }
             const newTask = await ctx.prisma.task.create({
                 data: {
                     title: input.title,
                     content: input.description,
                     isFavorite: input.isFavorite,
                     goalDate: input.goalDate,
-                    userId: ctx.user.id,
+                    userId: input.userId,
                 },
             });
             return newTask;
         }),
-    updateTask: protectedProcedure
+    updateTask: publicProcedure
         .input(
             z.object({
+                userId: z.string(),
                 id: z.string(),
                 title: z.string().optional(),
                 description: z.string().optional(),
@@ -36,6 +49,9 @@ export const taskRouter = router({
             })
         )
         .mutation(async ({ ctx, input }) => {
+            if (userExist(ctx, input.userId) === null) {
+                throw new Error("User does not exist");
+            }
             const updatedTask = await ctx.prisma.task.update({
                 where: {
                     id: input.id,
@@ -50,13 +66,17 @@ export const taskRouter = router({
             });
             return updatedTask;
         }),
-    deleteTask: protectedProcedure
+    deleteTask: publicProcedure
         .input(
             z.object({
+                userId: z.string(),
                 id: z.string(),
             })
         )
         .mutation(async ({ ctx, input }) => {
+            if (userExist(ctx, input.userId) === null) {
+                throw new Error("User does not exist");
+            }
             const deletedTask = await ctx.prisma.task.delete({
                 where: {
                     id: input.id,
@@ -64,18 +84,22 @@ export const taskRouter = router({
             });
             return deletedTask;
         }),
-    getTasks: protectedProcedure
+    getTasks: publicProcedure
         .input(
             z.object({
+                userId: z.string(),
                 searchQuery: z.string().optional(),
                 isCompleted: z.boolean().optional(),
                 isFavorite: z.boolean().optional(),
             })
         )
         .query(async ({ ctx, input }) => {
+            if (userExist(ctx, input.userId) === null) {
+                throw new Error("User does not exist");
+            }
             const tasks = await ctx.prisma.task.findMany({
                 where: {
-                    userId: ctx.user.id,
+                    userId: input.userId,
                     title: {
                         contains: input.searchQuery,
                     },

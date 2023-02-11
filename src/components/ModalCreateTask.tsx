@@ -7,8 +7,8 @@ interface ModalCreateTaskProps {
   setModalOpen: (value: boolean) => void;
   actionOnSave: (
     title: string,
-    isFavorite: boolean,
-    content: string
+    description: string,
+    isFavorite: boolean
   ) => Promise<void>;
   title?: string;
   isFavorite?: boolean;
@@ -27,15 +27,11 @@ export const ModalCreateTask = (props: ModalCreateTaskProps) => {
     const title = e.currentTarget.title.value;
     const description = e.currentTarget.description.value;
 
-    if (title || description) {
+    if (!title || !description) {
       toast.error("Title and description are required");
       return;
     }
-    try {
-      await mergedProps.actionOnSave(title, fav(), description);
-    } catch (err) {
-      toast.error(err);
-    }
+    await mergedProps.actionOnSave(title, description, fav());
     mergedProps.setModalOpen(false);
   }
 

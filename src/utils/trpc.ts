@@ -1,14 +1,25 @@
-import {
-    createTRPCProxyClient, httpLink, loggerLink
-} from '@trpc/client';
-import { clientEnv } from '~/env/client';
-import type { AppRouter } from "~/server/trpc/router/_app";
+import { QueryClient } from "@adeora/solid-query";
+import type { IAppRouter } from "~/server/trpc/router/_app";
+import { createTRPCSolidStart } from "solid-trpc";
+import { httpBatchLink } from "@trpc/client";
 
-export const trpc = createTRPCProxyClient<AppRouter>({
-    links: [
-        loggerLink(),
-        httpLink({
-            url: `${clientEnv.START_BASE_URL}/api/trpc`,
+const getBaseUrl = () => {
+  if (typeof window !== "undefined") return "";
+  // replace example.com with your actual production url
+  if (process.env.NODE_ENV === "production") return "https://example.com";
+  return `http://localhost:${process.env.PORT ?? 3000}`;
+};
+
+export const trpc = createTRPCSolidStart<IAppRouter>({
+  config() {
+    return {
+      links: [
+        httpBatchLink({
+          url: `${getBaseUrl()}/api/trpc`,
         }),
-    ],
+      ],
+    };
+  },
 });
+
+export const queryClient = new QueryClient();

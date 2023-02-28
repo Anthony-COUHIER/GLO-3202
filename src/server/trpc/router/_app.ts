@@ -1,10 +1,8 @@
-import { t } from '../utils'
-import authRouter from './auth'
-import taskRouter from './task'
+import { router } from "../utils";
+import example from "./example";
 
-export const appRouter = t.router({
-    auth: authRouter,
-    task: taskRouter,
-})
+export const appRouter = router({
+  example,
+});
 
-export type AppRouter = typeof appRouter
+export type IAppRouter = typeof appRouter;

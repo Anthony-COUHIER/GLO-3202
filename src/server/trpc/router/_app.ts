@@ -1,8 +1,8 @@
 import { router } from "../utils";
-import example from "./example";
+import authRouter from "./auth";
 
 export const appRouter = router({
-  example,
+  authRouter,
 });
 
 export type IAppRouter = typeof appRouter;

@@ -11,7 +11,7 @@ export const formatErrors = (
     })
     .filter(Boolean);
 
-const env = clientScheme.safeParse(import.meta.env);
+const env = clientScheme.safeParse(process.env);
 
 if (env.success === false) {
   console.error(

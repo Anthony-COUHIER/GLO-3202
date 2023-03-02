@@ -14,6 +14,7 @@ import {
   Link,
 } from "solid-start";
 import { trpc, queryClient } from "~/utils/trpc";
+import { Toaster } from "solid-toast";
 
 export default function Root() {
   return (
@@ -35,6 +36,7 @@ export default function Root() {
               </Routes>
             </ErrorBoundary>
           </Suspense>
+          <Toaster />
         </trpc.Provider>
         <Scripts />
       </Body>

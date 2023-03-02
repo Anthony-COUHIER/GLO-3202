@@ -39,6 +39,7 @@
     "solid-js": "^1.6.11",
     "solid-start": "^0.2.21",
     "solid-start-trpc": "^0.0.16",
+    "solid-toast": "^0.4.0",
     "solid-trpc": "0.1.0-sssr.6",
     "undici": "5.20.0",
     "zod": "^3.20.6"

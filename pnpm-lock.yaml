@@ -25,6 +25,7 @@ specifiers:
   solid-start-node: ^0.2.21
   solid-start-trpc: ^0.0.16
   solid-start-vercel: ^0.2.21
+  solid-toast: ^0.4.0
   solid-trpc: 0.1.0-sssr.6
   tailwindcss: ^3.2.7
   typescript: ^4.9.5
@@ -47,6 +48,7 @@ dependencies:
   solid-js: 1.6.11
   solid-start: 0.2.22_gqfaputkq2jqm75tblm2mef4ve
   solid-start-trpc: 0.0.16_wdzcejtpbnp3ostlhql7kjk5zu
+  solid-toast: 0.4.0_solid-js@1.6.11
   solid-trpc: 0.1.0-sssr.6_wq3nvg2rbsdd3twk6otiqwz7q4
   undici: 5.20.0
   zod: 3.20.6
@@ -4243,6 +4245,14 @@ packages:
       wait-on: 6.0.1_debug@4.3.4
     transitivePeerDependencies:
       - supports-color
+
+  /solid-toast/0.4.0_solid-js@1.6.11:
+    resolution: {integrity: sha512-ciJbj+n+7KbUN6wfwZsW7lqFESLoQ9sXMG4uJWuHrIw2f0GxX3/wLSKs0Q1YwdTZZRxyRJ1Nwc2eBVcJvs91+g==}
+    peerDependencies:
+      solid-js: ^1.5.4
+    dependencies:
+      solid-js: 1.6.11
+    dev: false
 
   /solid-trpc/0.1.0-sssr.6_wq3nvg2rbsdd3twk6otiqwz7q4:
     resolution: {integrity: sha512-cnuRn9MEcyoKOrw59pEe6Xz+dwCqNzph5if4xMo/+++C5odfg2KXCMDy/++GIGZEVMh3/yu0V73Ri6AWvhZESg==}

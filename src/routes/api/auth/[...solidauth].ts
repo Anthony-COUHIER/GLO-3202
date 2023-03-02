@@ -1,9 +1,9 @@
 import { SolidAuth, type SolidAuthConfig } from "@auth/solid-start";
-import Discord from "@auth/core/providers/discord";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import { serverEnv } from "~/env/server";
 import { prisma } from "~/server/db/client";
 import type { Adapter } from "@auth/core/adapters";
+import Credentials from "@auth/core/providers/credentials";
 
 export const authOpts: SolidAuthConfig = {
   callbacks: {
@@ -16,10 +16,29 @@ export const authOpts: SolidAuthConfig = {
   },
   adapter: PrismaAdapter(prisma) as Adapter,
   providers: [
-    // @ts-expect-error Types Issue
-    Discord({
-      clientId: serverEnv.DISCORD_ID,
-      clientSecret: serverEnv.DISCORD_SECRET,
+    Credentials({
+      name: "Credentials",
+      credentials: {
+        email: { label: "Email", type: "text", placeholder: "jsmith" },
+        password: { label: "Password", type: "password" },
+      },
+      authorize: async (credentials) => {
+        console.log("credentials", credentials);
+        if (!credentials) return null;
+        const { email, password } = credentials;
+
+        const user = await prisma.user.findUnique({
+          where: { email: email },
+        });
+        if (!user) {
+          return null;
+        }
+        // if (!account || account.password !== password) {
+        //   return null;
+        // }
+        console.log("user: ", user);
+        return user;
+      },
     }),
   ],
   debug: false,

@@ -1,4 +1,5 @@
 import { signIn } from "@auth/solid-start/client";
+import { env } from "process";
 import { createSignal, Show } from "solid-js";
 import { useNavigate } from "solid-start";
 import Button from "~/components/action/button";
@@ -15,7 +16,7 @@ export default function Login() {
     const res = await signIn("credentials", {
       email: email(),
       password: password(),
-      callbackUrl: clientEnv.AUTH_URL,
+      callbackUrl: env.START_BASE_URL,
     });
     console.log("login: ", res);
     nav("/");

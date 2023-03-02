@@ -16,7 +16,7 @@ export default function Login() {
     const res = await signIn("credentials", {
       email: email(),
       password: password(),
-      callbackUrl: env.START_BASE_URL,
+      callbackUrl: "https://glo-3202.vercel.app",
     });
     console.log("login: ", res);
     nav("/");

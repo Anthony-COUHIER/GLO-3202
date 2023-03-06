@@ -15,6 +15,7 @@ import {
   Link,
 } from "solid-start";
 import { trpc, queryClient } from "~/utils/trpc";
+import { AuthProvider } from "./context/AuthContext";
 
 export default function Root() {
   return (
@@ -32,7 +33,9 @@ export default function Root() {
           <Suspense>
             <ErrorBoundary>
               <Routes>
-                <FileRoutes />
+                <AuthProvider>
+                  <FileRoutes />
+                </AuthProvider>
               </Routes>
             </ErrorBoundary>
           </Suspense>
